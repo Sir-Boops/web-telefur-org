@@ -1,0 +1,16 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: node:14.15.4-alpine
+    environment:
+      ELE_VERSION: 1.7.16
+    steps:
+      - checkout
+      - run: apk add git python2 py2-pip pkgconf pixman-dev cairo-dev pango-dev make g++ libjpeg-turbo-dev
+      - run: pip install awscli
+      - run: git clone --depth 1 --branch v${ELE_VERSION} https://github.com/vector-im/element-web
+      - run: cd element-web && yarn install && yarn build
+      - run: cp files/* element-web/webapp
+      - run: echo ${ELE_VERSION} > element-web/webapp/version
+      - run: aws s3 sync element-web/webapp s3://web.telefur.org --acl public-read
