@@ -33,7 +33,8 @@
     "roomDirectory": {
         "servers": [
             "matrix.telefur.org",
-            "matrix.org"
+            "matrix.org",
+            "gitter.im"
         ]
     },
     "piwik": false,
